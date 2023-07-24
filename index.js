@@ -68,6 +68,22 @@ async function run() {
         const result = await AdmissionCollection.insertOne(admissionData);
         res.send(result);
       })
+
+    //   get My college data 
+    app.get('/admission/:email', async (req, res) => {
+        try {
+          const email = req.params.email;
+          const query = { email }; // Use the email parameter in the query
+          const result = await AdmissionCollection.findOne(query);
+          if (!result) {
+            res.status(404).send('College not found'); // If no college found with the given email
+          } else {
+            res.send(result);
+          }
+        } catch (error) {
+          res.status(500).send('Error retrieving college details');
+        }
+      });
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
